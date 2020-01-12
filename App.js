@@ -21,6 +21,7 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import { createDrawerNavigator, DrawerActions, DrawerItems  } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 
 const CustomDrawerContentComponent = props => (
   <ScrollView>
@@ -53,9 +54,41 @@ class MyHomeScreen extends React.Component {
         onPress={() => this.props.navigation.navigate('Notifications')}
         title="Go to notifications"
       />
+      <Button
+        onPress={() => this.props.navigation.navigate('Next')}
+        title='Go next screen'
+      />
       <Text>MyHomeScreen</Text>
       </View>
     );
+  }
+}
+
+class MyNextScreen extends React.Component {
+  render(){
+    return(
+      <View>
+        <Text>my screen</Text>
+        <Button
+        onPress={() => this.props.navigation.navigate('Second')}
+        title='Go next screen'
+      />
+      </View>
+    )
+  }
+}
+
+class MySecondScreen extends React.Component {
+  render(){
+    return(
+      <View>
+        <Text>my second screen</Text>
+        <Button
+        onPress={() => this.props.navigation.navigate('Next')}
+        title='Go next screen'
+      />
+      </View>
+    )
   }
 }
 
@@ -94,6 +127,15 @@ const styles = StyleSheet.create({
   },
 });
 
+const MyNavigationStack = createStackNavigator({
+  Next: {
+    screen: MyNextScreen
+  },
+  Second: {
+    screen: MySecondScreen
+  }
+})
+
 const MyDrawerNavigator = createDrawerNavigator({
   Home: {
     screen: MyHomeScreen,
@@ -101,9 +143,13 @@ const MyDrawerNavigator = createDrawerNavigator({
   Notifications: {
     screen: MyNotificationsScreen,
   },
+  Next: {
+    screen: MyNavigationStack
+  }
 }, {
   contentComponent: CustomDrawerContentComponent,
-  minSwipeDistance: 64
+  minSwipeDistance: 64,
+  initialRouteName: 'Home'
 });
 
 const MyApp = createAppContainer(MyDrawerNavigator);
